@@ -3134,4 +3134,12 @@ def test_ColorMap():
     b.draw(cm[b.area()])
   result = [img]
   name_stem = "test_color_map"
-  perform_diff(result,name_stem,1.0)    
+  perform_diff(result,name_stem,1.0)
+
+def test_watershed():
+    img = Image('../sampleimages/wshed.jpg')
+    img1 = img.watershed()
+    img2 = img.watershed(color=True)
+    result = [img1,img2]
+    name_stem = "test_watershed"
+    perform_diff(result,name_stem,3.0)
