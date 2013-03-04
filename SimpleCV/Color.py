@@ -39,7 +39,7 @@ class Color:
 
     VIOLET = (181, 126, 220)
     ORANGE = (255, 165, 0)
-    GREEN = (0, 128, 0)
+    GREEN = (0, 255, 0)
     GRAY = (128, 128, 128)
 
 
