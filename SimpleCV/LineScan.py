@@ -70,7 +70,7 @@ class LineScan(list):
         **SUMMARY**
 
         Returns a LineScan when sliced. Previously used to
-        return list. Now it is possible to use LineScanm member
+        return list. Now it is possible to use LineScan member
         functions on sub-lists
 
         """
@@ -85,6 +85,31 @@ class LineScan(list):
         """
         return self.__getitem__(slice(i,j))
 
+    def __sub__(self,other):
+        
+        retVal = LineScan((np.array(self) - np.array(other)).tolist())
+        retVal.pointLoc = self.pointLoc
+        retVal.image=self.image
+        retVal.pt1=self.pt1
+        retVal.pt2=self.pt2
+        retVal.x=self.col
+        retVal.y=self.row
+        retVal.channel=self.channel
+        return retVal
+
+    def __add__(self,other):
+        
+        temp = np.array(self,dtype=int) + np.array(other,dtype=int)
+        temp = temp.clip(0,255);
+        retVal = LineScan(temp.tolist())
+        retVal.pointLoc = self.pointLoc
+        retVal.image=self.image
+        retVal.pt1=self.pt1
+        retVal.pt2=self.pt2
+        retVal.x=self.col
+        retVal.y=self.row
+        retVal.channel=self.channel
+        return retVal
 
     def smooth(self,degree=3):
         """
