@@ -4,6 +4,7 @@ import scipy.signal as sps
 import scipy.optimize as spo
 import numpy as np
 import copy
+import operator
 
 
 class LineScan(list):
@@ -87,7 +88,8 @@ class LineScan(list):
 
     def __sub__(self,other):
         
-        retVal = LineScan((np.array(self) - np.array(other)).tolist())
+        #retVal = LineScan((np.array(self,dtype=int) - np.array(other,dtype=int)).tolist())
+        retVal = LineScan(np.clip(map(operator.sub,map(int,self),map(int,other)),0,255).tolist())
         retVal.pointLoc = self.pointLoc
         retVal.image=self.image
         retVal.pt1=self.pt1
@@ -99,9 +101,37 @@ class LineScan(list):
 
     def __add__(self,other):
         
-        temp = np.array(self,dtype=int) + np.array(other,dtype=int)
-        temp = temp.clip(0,255);
-        retVal = LineScan(temp.tolist())
+        #temp = np.array(self,dtype=int) + np.array(other,dtype=int)
+        #temp = temp.clip(0,255);
+        retVal = LineScan(np.clip(map(operator.add,map(int,self),map(int,other)),0,255).tolist())
+        retVal.pointLoc = self.pointLoc
+        retVal.image=self.image
+        retVal.pt1=self.pt1
+        retVal.pt2=self.pt2
+        retVal.x=self.col
+        retVal.y=self.row
+        retVal.channel=self.channel
+        return retVal
+
+    def __mul__(self,other):
+
+        #temp = np.array(self,dtype=int) * np.array(other,dtype=int)
+        #temp = temp.clip(0,255)
+        retVal = LineScan(np.clip(map(operator.mul,map(int,self),map(int,other)),0,255).tolist())
+        retVal.pointLoc = self.pointLoc
+        retVal.image=self.image
+        retVal.pt1=self.pt1
+        retVal.pt2=self.pt2
+        retVal.x=self.col
+        retVal.y=self.row
+        retVal.channel=self.channel
+        return retVal
+
+    def __div__(self,other):
+
+        #temp = np.array(self,dtype=int) / np.array(other,dtype=int)
+        #temp.clip(0,255)
+        retVal = LineScan(np.clip(map(operator.div,map(int,self),map(int,other)),0,255).tolist())
         retVal.pointLoc = self.pointLoc
         retVal.image=self.image
         retVal.pt1=self.pt1

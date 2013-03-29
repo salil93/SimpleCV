@@ -3356,3 +3356,27 @@ def test_LineScan_add():
         pass
     else:
         assert False
+
+def test_LineScan_mul():
+    img = Image('lenna')
+    ls = img.getLineScan(x=20)
+    l = ls * ls
+    a = int(ls[20]) * int(ls[20])
+    if a > 255:
+        a = 255
+    if a == l[20]:
+        pass
+    else:
+        assert False
+
+def test_LineScan_div():
+    img = Image('lenna')
+    ls = img.getLineScan(x=20)
+    l = ls / ls
+    a = int(ls[20]) / int(ls[20])
+    if a > 255:
+        a = 255
+    if a == l[20]:
+        pass
+    else:
+        assert False
