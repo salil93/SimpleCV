@@ -3483,3 +3483,13 @@ def test_getFREAKDescriptor():
         else:
             pass
     pass
+
+def test_tvDenoising():
+    img = Image('lenna')
+    img1 = img.tvDenoising(gray=False,weight=20)
+    img2 = img.tvDenoising(weight=50,max_iter=250)
+    img3 = img.toGray()
+    img3 = img3.tvDenoising(gray=True,weight=20)
+    result = [img1,img2,img3]
+    name_stem = "test_tvDenoising"
+    perform_diff(result,name_stem,5)

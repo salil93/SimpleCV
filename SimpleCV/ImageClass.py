@@ -19,6 +19,7 @@ import math # math... who does that
 import copy # for deep copy
 #import scipy.stats.mode as spsmode
 
+
 class ColorSpace:
     """
     **SUMMARY**
@@ -13022,10 +13023,55 @@ class Image:
 
         return fs, self._mKPDescriptors
 
+    def tvDenoising(self, gray=False, weight=50, eps=0.0002, max_iter=200):
+        """
+        **SUMMARY**
 
+        Performs Total Variation Denoising, this filter tries to minimize the
+        total-variation of the image. 
+
+        see : http://en.wikipedia.org/wiki/Total_variation_denoising
+
+        **Parameters**
+
+        * *gray* - Boolean value which identifies the colorspace of
+            the input image. If set to True, filter uses gray scale values,
+            otherwise colorspace is used.
+
+        * *weight* - Denoising weight, it controls the extent of denoising.
+
+        * *eps* - Stopping criteria for the algorithm. If the relative difference
+            of the cost function becomes less than this value, the algorithm stops.
+
+        * *max_iter* - Determines the maximum number of iterations the algorithm
+            goes through for optimizing.
+
+        **NOTE**
+        This function requires Scikit-image to be installed!
+        """
+
+        try:
+            from skimage.filter import denoise_tv_chambolle
+        except ImportError:
+            print 'Scikit-image library not installed'
+            return None
         
-      
-        
+        img = self.copy()
+        if gray is True:
+            img = img.getGrayNumpy()
+            multichannel = False
+        elif gray is False:
+            img = img.getNumpy()
+            multichannel = True
+        else:
+            print 'gray value not valid'
+
+        denoise_mat = denoise_tv_chambolle(img,weight,eps,max_iter,multichannel)
+        retVal = img * denoise_mat
+
+        return Image(retVal)
+
+
 from SimpleCV.Features import FeatureSet, Feature, Barcode, Corner, HaarFeature, Line, Chessboard, TemplateMatch, BlobMaker, Circle, KeyPoint, Motion, KeypointMatch, CAMShift, TrackSet, LK, SURFTracker
 from SimpleCV.Stream import JpegStreamer
 from SimpleCV.Font import *
