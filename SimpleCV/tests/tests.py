@@ -3490,6 +3490,7 @@ def test_tvDenoising():
     img2 = img.tvDenoising(weight=50,max_iter=250)
     img3 = img.toGray()
     img3 = img3.tvDenoising(gray=True,weight=20)
-    result = [img1,img2,img3]
+    img4 = img.tvDenoising(resize=True)
+    result = [img1,img2,img3,img4]
     name_stem = "test_tvDenoising"
-    perform_diff(result,name_stem,5)
+    perform_diff(result,name_stem,3)

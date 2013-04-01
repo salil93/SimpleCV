@@ -13023,7 +13023,7 @@ class Image:
 
         return fs, self._mKPDescriptors
 
-    def tvDenoising(self, gray=False, weight=50, eps=0.0002, max_iter=200):
+    def tvDenoising(self, gray=False, weight=50, eps=0.0002, max_iter=200, resize=False):
         """
         **SUMMARY**
 
@@ -13046,6 +13046,9 @@ class Image:
         * *max_iter* - Determines the maximum number of iterations the algorithm
             goes through for optimizing.
 
+        * *resize* - If set to true, filter is applied on a resized image(half of the original)
+            to speed up the filter, otherwise filter works on complete image.
+
         **NOTE**
         This function requires Scikit-image to be installed!
         """
@@ -13057,6 +13060,9 @@ class Image:
             return None
         
         img = self.copy()
+        if resize is True:
+            img = img.resize(img.width/2,img.height/2)
+
         if gray is True:
             img = img.getGrayNumpy()
             multichannel = False
@@ -13069,7 +13075,11 @@ class Image:
         denoise_mat = denoise_tv_chambolle(img,weight,eps,max_iter,multichannel)
         retVal = img * denoise_mat
 
-        return Image(retVal)
+        retVal = Image(retVal)
+        if resize is True:
+            return retVal.resize(retVal.width*2,retVal.width*2)
+        else:
+            return retVal
 
 
 from SimpleCV.Features import FeatureSet, Feature, Barcode, Corner, HaarFeature, Line, Chessboard, TemplateMatch, BlobMaker, Circle, KeyPoint, Motion, KeypointMatch, CAMShift, TrackSet, LK, SURFTracker
