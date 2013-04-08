@@ -3554,3 +3554,4 @@ def test_tvDenoising():
         perform_diff(result,name_stem,3)
     except ImportError:
         pass
+        
